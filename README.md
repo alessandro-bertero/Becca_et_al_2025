@@ -6,19 +6,19 @@ The pipelines in this repository are relative to the publication figures 3-5 and
 
 ## 4C_analysis
 XXXadd a breef description here of the steps.
-### Relative to Fig 3 and S3
+** Relative to Fig 3 and S3 **
 
 ## bulk_RNAseq
 XXXadd a breef description here of the steps.
-### Relative to Fig 4
+** Relative to Fig 4 **
 
 ## scRNAseq_cardiac_organoids (scRNAseq_1)
 XXXadd a breef description here of the steps.
-### Relative to Fig S4
+** Relative to Fig S4 **
 
 ## scRNAseq_cardiac_organoids_with_KD (scRNAseq_2)
 XXXadd a breef description here of the steps.
-### Relative to Fig 5 and Fig S5
+** Relative to Fig 5 and Fig S5 **
 
 # Run the scripts within a Docker container:
 
