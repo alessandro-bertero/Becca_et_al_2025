@@ -4,26 +4,23 @@ Code repository for the bioinformatic analysis of Becca et al 2025 "Opposing CTC
 In order to reproduce our pipelines follow the steps below from downloading the supporting data files, pulling our docker containers and running the pipelines.
 The pipelines in this repository are relative to the publication figures 3-5 and supplementary
 
-4C_analysis
+##4C_analysis
 XXXadd a breef description here of the steps.
+###Relative to Fig 3 and S3
 
-Relative to Fig 3 and S3
-
-bulk_RNAseq
+##bulk_RNAseq
 XXXadd a breef description here of the steps.
-Relative to Fig 4
+###Relative to Fig 4
 
-scRNAseq_cardiac_organoids (scRNAseq_1)
+##scRNAseq_cardiac_organoids (scRNAseq_1)
 XXXadd a breef description here of the steps.
+###Relative to Fig S4
 
-Relative to Fig S4
-
-scRNAseq_cardiac_organoids_with_KD (scRNAseq_2)
+##scRNAseq_cardiac_organoids_with_KD (scRNAseq_2)
 XXXadd a breef description here of the steps.
+###Relative to Fig 5 and Fig S5
 
-Relative to Fig 5 and Fig S5
-
-# Run the scripts within a docker container:
+# Run the scripts within a Docker container:
 
 The analysis can be performed within a Docker environment, which uses RStudio Server (2023.12.1 Build 402 ìOcean stormî release). The Docker image can be downloaded from our repository hedgelab/rstudio-hedgelab (rstudio password is rstudio when omitted).
 
@@ -47,8 +44,9 @@ NB when analyzing the bulk RNAseq data pull image: hedgelab/bulk_image:image3 wi
     dockered
     docker pull hedgelab/bulk_image:image3
 
-Follow these steps to pull and run the Docker image for the 4C data analysis from the terminal:
+Refer to our GitHub [bulk RNAseq pipeline](https://github.com/sara-bianchi/Bulk_RNA_seq_pipeline)
 
+Follow these steps to pull and run the Docker image for the 4C data analysis from the terminal:
 
     dockered
     docker pull hedgelab/hic_pipeline:image12
@@ -56,10 +54,9 @@ Follow these steps to pull and run the Docker image for the 4C data analysis fro
     docker run -d -itv /the/folder/you/want/to/share:/scratch --name=NAME_CONTAINER hedgelab/hic_pipeline:image12
     docker exec -it NAME_CONTAINER Rscript /home/shared_folder/Rscript.R
 
-Refer to our github [Hi-c pipeline](https://github.com/sara-bianchi/HiC_pipeline)
+Refer to our GitHub [Hi-c pipeline](https://github.com/sara-bianchi/HiC_pipeline)
 
-
-# Download the supporting datasets from Zenodo repository:
+# Download the supporting datasets from the Zenodo repository:
 Use wget or download directly on [Zenodo](https://doi.org/10.5281/zenodo.17256128).
 
     #scratch 4C 
