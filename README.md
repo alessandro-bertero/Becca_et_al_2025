@@ -4,21 +4,21 @@ Code repository for the bioinformatic analysis of Becca et al 2025 "Opposing CTC
 In order to reproduce our pipelines follow the steps below from downloading the supporting data files, pulling our docker containers and running the pipelines.
 The pipelines in this repository are relative to the publication figures 3-5 and supplementary
 
-##4C_analysis
+## 4C_analysis
 XXXadd a breef description here of the steps.
-###Relative to Fig 3 and S3
+### Relative to Fig 3 and S3
 
-##bulk_RNAseq
+## bulk_RNAseq
 XXXadd a breef description here of the steps.
-###Relative to Fig 4
+### Relative to Fig 4
 
-##scRNAseq_cardiac_organoids (scRNAseq_1)
+## scRNAseq_cardiac_organoids (scRNAseq_1)
 XXXadd a breef description here of the steps.
-###Relative to Fig S4
+### Relative to Fig S4
 
-##scRNAseq_cardiac_organoids_with_KD (scRNAseq_2)
+## scRNAseq_cardiac_organoids_with_KD (scRNAseq_2)
 XXXadd a breef description here of the steps.
-###Relative to Fig 5 and Fig S5
+### Relative to Fig 5 and Fig S5
 
 # Run the scripts within a Docker container:
 
