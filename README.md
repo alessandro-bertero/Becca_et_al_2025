@@ -5,31 +5,31 @@ In order to reproduce our pipelines follow the steps below from downloading the 
 The pipelines in this repository are relative to the publication figures 1-6 and supplementary
 
 ### HiC_data_integration
-XXXadd a breef description here of the steps.
+HiC data from different developmental stages of cardiac differentiation in various cell lines were analyzed to investigate the compartment changes occurring on the TTN locus. The datasets were dowloaded from public repositories (4DN Data Portal and GEO). HiC data were reallinged (for RUES2 data only) and ICE-normalized with HiC-pro, and preprocessed with HiCExplorer to change the data format. Preprocessed files were used for differential compartment analysis with dcHiC, and for 4C analysis from the TTN promoter with the HiContacts R package. HiC tracks were visualized with pyGenomeTracks.
 **Relative to Fig 1 and S1**
 
 ### scRNAseq_data_integration
-XXXadd a breef description here of the steps.
+Single cell data from different stages of human embryos development were integrated to analyze the changes in gene expression of CTCF and GATA4 across cardiac differentiation. With the first script (step1_preprocessing.R) three datasets are downloaded as scRNAseq counts with the respective meta data, and the they are preprocessed in order to be combined in a single object containing only the cells related to the mesodermal-cardiac lineage. With the second script (step2_analysis.R) the resulting sigle cell object is log2 normalized, corrected to account for the batch of the original dataset with Seurat, and analyzed with Monocle3 to identify the main clusters and to define the pseudotime trajectory related to cardiac differentiation. Gene expression patterns of the genes of interest and of some developmental markers were finally analyzed across the selected trajectory.
 **Relative to Fig 1 and S1**
-
-### bulk_RNAseq_2d_cardiomyocytes (bulkRNAseq_1)
-XXXadd a breef description here of the steps.
-**Relative to Fig 2 and S2**
 
 ### 4C_analysis
 XXXadd a breef description here of the steps.
 **Relative to Fig 3 and S3**
 
+### bulk_RNAseq_2d_cardiomyocytes_with_KD (bulkRNAseq_1)
+Bulk RNAseq data of 2D cardiomyocytes were analyzed to investigate the gene expression changes of B to A genes upon GATA4 and CTCF KD. With the first script (H001BS1_step1_preprocessing.R) raw reads are trimmed using trim-galore, and aligned on the GRCh38.112 genome using STAR. With the second script (H001BS1_step2_DGEanalysis) the counts are combined, filtered with DESeq2, CPM and TPM normalized, batch corrected and used for differential gene expression analysis with limma comapring each TET condition with its isogenic control. GSEA analysis was then performed on differentially expressed genes to analyze the main GO terms and Kegg pathways related to cardiac development. The thirs script (H001BS1_step3_BtoAgenes.R) H9 compartment and gene expression data were combined to identify the genes with the strongest B to A switch from day 0 to day 80 of cardiac development, and with the highest gene expression peak after day 15. These genes were used as a new gene set for GSEA analysis on the ranking resulting from the DGE analysis performed with the previous step.
+**Relative to Fig 2 and S2**
+
 ### bulk_RNAseq_organoids_with_KD (bulkRNAseq_2)
-XXXadd a breef description here of the steps.
+Bulk RNAseq data of 3D right ventricle (RV) and atrial (AT) cardiac organoids were analyze to investigate the anticorrelation in gene expression changes upon GATA4 and CTCF KD. With the first script (SBe001AS1_step1_preprocessing.sh) raw reads are trimmed using trim-galore, and aligned on the GRCh38.111 genome using STAR. With the second script (SBe001AS1_step2_DGEanalysis.R) the counts are combined, filtered with DESeq2, CPM and TPM normalized, batch corrected and used for differential gene expression analysis with limma comapring each TET condition with its isogenic control. With the third script (SBe001AS1_step3_heatmaps_GSEA_RRHO.R) data were separated for the 2 cardiac chambers to perform a PCA analysis, and log2 TPM counts were analyzed for B to A genes in the 2 chambers. The ranking obtained from the DGE analysis performed in the previous step was used for GSEA analysis to investigate GO terms related to heart process fucntions, and for RRHO analysis to compute the global correlation of the gene expression perturbations in each chamber.
 **Relative to Fig 4 and S4**
 
 ### scRNAseq_cardiac_organoids (scRNAseq_1)
-XXXadd a breef description here of the steps.
+Single cell RNAseq data of cardiac organoids were analysed to compare the specific phenotypic commitment of 3 differentiation protocols inducing the right ventricle (RV), left ventricle (LV) and atrium (AT) fates respectively. Raw reads were alligned and combined with cellranger8, and scRNAseq counts were filtered with Seurat with the AB001_step1_Seurat_filtering.R script. With the AB001_step2_Monocle_SeparateChambersAnalysis.R, cells differentiated with each protol were separated in a different single cell dataset, and each dataset was analysed with Monocle3 to perform dimensional reduction, clustering, and pseudotime analysis. Each cluster was further analysed with GO analysis on the top 10 expressed markers, with DGE analysis compared to the others and with gene modules detection to identify the cell type related to each cluster. Where needed new subclusters were created according to cell-type specific markers. With the last script (AB001_step3_Monocle_JointChambersAnalysis.R) the annotated cells were combined in a new unique single cell dataset. The dataset was again processed with dimensional reduction, and the main markers were visualized on the resulting UMAP. Finally the clusters classification was validated with Seurat by transfering the cell types label from the dataset retrieved form the GSE263193 accession number.
 **Relative to Fig S4**
 
 ### scRNAseq_cardiac_organoids_with_KD (scRNAseq_2)
-XXXadd a breef description here of the steps.
+Single cell RNAseq data of left ventricle (LV) cardiac organoids were analysed to compare the cell types distribution upon GATA4 and CTCF KD. Raw reads were alligned and combined with cellranger8, and scRNAseq counts were filtered with the AB002_Seurat_filtering.R script. 
 **Relative to Fig 5, Fig 6, and Fig S5**
 
 # Download the supporting datasets from the Zenodo repository:
@@ -64,35 +64,38 @@ Follow these steps to pull and run the Docker image for the HiC data analysis fr
     
 For H9 HiC data integration unzip the scratch_HiC_H9, add the H9_Rscript.R script to the unzipped folder, and in the parent folder proceed with the following steps:
 
-    docker run -d -itv ./scratch_HiC_H9:/home/shared_folder --name=NAME_CONTAINER hedgelab/hic_pipeline:image15
+    docker run -d -v ./scratch_HiC_H9:/home/shared_folder --name=NAME_CONTAINER hedgelab/hic_pipeline:image15
     docker exec -it NAME_CONTAINER Rscript /home/shared_folder/H9_Rscript.R
     docker exec -it NOME_CONTAINER pyGenomeTracks --tracks /home/shared_folder/genomeTrack/track_TTN --region chr2:179350000-179700000 --outFileName /home/shared_folder/genomeTrack/TTN_H9_final.pdf
 
 For WTC11 HiC data integration unzip the scratch_HiC_WTC11 and add the WTC11_Rscript.R script to the unzipped folder. Create a subfolder ./mcool and download the .mcool files from the 4DN Data Portal with the following Experiment Set Codes: 4DNFIUMP8ZZ6, 4DNFIK5SQFY2, 4DNFIUD4ECSX, 4DNFI4N2S9QW, 4DNFI4MXUCUV, 4DNFI1LYV4VR, 4DNFIX5V9GBA, 4DNFIJPZ4ASS, 4DNFIM3UJ1XI, 4DNFIRHM7URR, 4DNFIYBBPZ1V, 4DNFIQ57GW6C. Move to the parent folder and proceed with the following steps:
 
-    docker run -d -itv ./scratch_HiC_WTC11:/home/shared_folder --name=NAME_CONTAINER hedgelab/hic_pipeline:image15
+    docker run -d -v ./scratch_HiC_WTC11:/home/shared_folder --name=NAME_CONTAINER hedgelab/hic_pipeline:image15
     docker exec -it NAME_CONTAINER Rscript /home/shared_folder/WTC11_Rscript.R
     docker exec -it NOME_CONTAINER pyGenomeTracks --tracks /home/shared_folder/genome_track/track_atrial --region chr2:178500000-178850000 --outFileName /home/shared_folder/genome_track/WTC11_TTN_atrial.pdf
     docker exec -it NOME_CONTAINER pyGenomeTracks --tracks /home/shared_folder/genome_track/track_ventricular --region chr2:178500000-178850000 --outFileName /home/shared_folder/genome_track/WTC11_TTN_ventricular.pdf
 
 For RUES2 HiC data integration unzip the scratch_HiC_RUES2 and add the RUES2_HiC_preprocessing.sh and RUES2_Rscript.R scripts to the unzipped folder. Move to the parent folder and proceed with the following steps:
 
-    docker run -d -itv ./scratch_HiC_RUES2:/home/shared_folder --name=NAME_CONTAINER hedgelab/hic_pipeline:image15
+    docker run -d -v ./scratch_HiC_RUES2:/home/shared_folder --name=NAME_CONTAINER hedgelab/hic_pipeline:image15
     docker exec -it NAME_CONTAINER ./home/shared_folder/RUES2_HiC_preprocessing.sh
     docker exec -it NAME_CONTAINER Rscript /home/shared_folder/RUES2_Rscript.R
     docker exec -it NOME_CONTAINER pyGenomeTracks --tracks /home/shared_folder/genomeTrack/track_TTN_RUES2 --region chr2:178500000-178850000 --outFileName /home/shared_folder/genomeTrack/TTN_RUES2_final.pdf
 
 Refer to our GitHub [Hi-c pipeline](https://github.com/sara-bianchi/HiC_pipeline)
 
+# 4C analysis
 Follow these steps to pull and run the Docker image for the 4C data analysis from the terminal:
 
     dockered
     docker pull hedgelab/4c:image1
 
-    docker run -d -itv /the/folder/you/want/to/share:/scratch --name=NAME_CONTAINER hedgelab/hic_pipeline:image15
+    docker run -d -v ./scratch_4C:/home/shared_folder --privileged=true -p 8787:8787 \\
+    -e PASSWORD=<your_password> -e USER=rstudio --name=NAME_CONTAINER hedgelab/4c:image1
     docker exec -it NAME_CONTAINER Rscript /home/shared_folder/Rscript.R
 
-Refer to our GitHub [Hi-c pipeline](https://github.com/sara-bianchi/HiC_pipeline)
+Replace <your_password> with your desired password, if it is omitted the password will be "rstudio". This command maps port 8787 on your host machine to port 8787 in the container, allowing you to access RStudio via your browser at http://localhost:8787. The USER=rstudio part ensures you'll log in as the rstudio user, and the PASSWORD variable sets the password you'll use to log in. Then use Rstudio through a browser.
+Share the folder containing the scripts and the "scratch" downloaded as suggested below.
 
 Follow these steps to pull and run the Docker image for the scRNAseq data analysis from the terminal:
 
