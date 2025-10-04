@@ -13,7 +13,7 @@ Single cell data from different stages of human embryos development were integra
 **Relative to Fig 1 and S1**
 
 ### 4C_analysis
-XXXadd a breef description here of the steps.
+4C data were analysed to compare the iteraction of the TTN promoter with the TTN gene body upon KO of 2 CTCF binding sites. Reads were alligned using o the hg38 human genome using the pipeline provided by Krijger P. H. L. et al., Methods (2020), and the resulting bigWig files were converted to BedGraph for easy data integration on R. The 4C_analysis.R script was used to normalize the tracks on the library size and to correct for the replicate batch. Counts realtive to the TTN gene were filtered and converted to BedGraph files for visualization with pyGenomeTracks. The resulting track was integrated with ChIP data of hESCs cells (ENCFF332TNJ) to obtain the area under the curbe (AUC) of the 4C profile under each peak and betwen each pair of consecutive peaks. The fifferences in the AUC of each regions for eaach pair of conditions were evaluated with a t.test. The 4C trackon chromosome2 was then binnd at 40kb, fitted into a polinomial function and the same fitting was performed for the RUES2 virtual 4C track (from the same viewpoint, retrieved from HiC data) of the different stages of cardiac development. The results were compared by computing the Pearson correlation of the second derivate of each pair of fucntions.
 **Relative to Fig 3 and S3**
 
 ### bulk_RNAseq_2d_cardiomyocytes_with_KD (bulkRNAseq_1)
@@ -25,11 +25,11 @@ Bulk RNAseq data of 3D right ventricle (RV) and atrial (AT) cardiac organoids we
 **Relative to Fig 4 and S4**
 
 ### scRNAseq_cardiac_organoids (scRNAseq_1)
-Single cell RNAseq data of cardiac organoids were analysed to compare the specific phenotypic commitment of 3 differentiation protocols inducing the right ventricle (RV), left ventricle (LV) and atrium (AT) fates respectively. Raw reads were alligned and combined with cellranger8, and scRNAseq counts were filtered with Seurat with the AB001_step1_Seurat_filtering.R script. With the AB001_step2_Monocle_SeparateChambersAnalysis.R, cells differentiated with each protol were separated in a different single cell dataset, and each dataset was analysed with Monocle3 to perform dimensional reduction, clustering, and pseudotime analysis. Each cluster was further analysed with GO analysis on the top 10 expressed markers, with DGE analysis compared to the others and with gene modules detection to identify the cell type related to each cluster. Where needed new subclusters were created according to cell-type specific markers. With the last script (AB001_step3_Monocle_JointChambersAnalysis.R) the annotated cells were combined in a new unique single cell dataset. The dataset was again processed with dimensional reduction, and the main markers were visualized on the resulting UMAP. Finally the clusters classification was validated with Seurat by transfering the cell types label from the dataset retrieved form the GSE263193 accession number.
+Single cell RNAseq data of cardiac organoids were analysed to compare the specific phenotypic commitment of 3 differentiation protocols inducing the right ventricle (RV), left ventricle (LV) and atrium (AT) fates respectively. Raw reads were alligned and combined with cellranger8, and scRNAseq counts were filtered with Seurat with the AB001_step1_Seurat_filtering.R script to remove cells with few counts or expressed genes and with high expression of mitochondrial genes. With the AB001_step2_Monocle_SeparateChambersAnalysis.R, cells differentiated with each protol were separated in a different single cell dataset, and each dataset was analysed with Monocle3 to perform log2 normalization, dimensional reduction, clustering, and pseudotime analysis. Each cluster was further analysed with GO analysis on the top 10 expressed markers, with DGE analysis compared to the others and with gene modules detection to identify the cell type related to each cluster. Where needed new subclusters were created according to cell-type specific markers. With the last script (AB001_step3_Monocle_JointChambersAnalysis.R) the annotated cells were combined in a new unique single cell dataset. The dataset was again processed with dimensional reduction, and the main markers were visualized on the resulting UMAP. Finally the clusters classification was validated with Seurat by transfering the cell types label from the dataset retrieved form the GSE263193 accession number.
 **Relative to Fig S4**
 
 ### scRNAseq_cardiac_organoids_with_KD (scRNAseq_2)
-Single cell RNAseq data of left ventricle (LV) cardiac organoids were analysed to compare the cell types distribution upon GATA4 and CTCF KD. Raw reads were alligned and combined with cellranger8, and scRNAseq counts were filtered with the AB002_Seurat_filtering.R script. 
+Single cell RNAseq data of left ventricle (LV) cardiac organoids were analysed to compare the cell types distribution upon GATA4 and CTCF KD. Raw reads were alligned and combined with cellranger8, and scRNAseq counts were filtered with the AB002_Seurat_filtering.R script to remove cells with few counts or expressed genes and with high expression of mitochondrial genes. The dataset was further processed with the Seurat pipeline in order to retrieve the metadata related to the cell cylce phase. With the AB002_step2_MonocleAnalysisAll.R, the single cell dataset was futher filtered to remove some artifacts, and it was preprocessed, and log2 normalized with Monocle3. With the AB002_step3_MonocleAnalysisSeparate.R the dataset was separated by timepoint (day4 and day7), and each resulting Monocle object was processed to obtain dimensional reduction, clustring, and pseudotime trajectories. Cluster idetity was defined upon combination of the GO of the top expressed markers, and GSEA (clusterProfiler) on differentially expressed genes of each cluster compared to the others. The resulting inferred cell types were validated with a gene module analysis and a visualization of the gene expression opatterns of validated markers. The enrichment of cells in each cluster in the TET compared to the control condition of each KD was evaluated with both a Fisher's exact test and a KNN graph analysis using MiloR. Differences in the cell cycle were evaluated with a Wilcoxon test based on Seurat's annotation.
 **Relative to Fig 5, Fig 6, and Fig S5**
 
 # Download the supporting datasets from the Zenodo repository:
@@ -56,7 +56,7 @@ Use wget or download directly on [Zenodo](https://doi.org/10.5281/zenodo.1725612
 
 The analysis can be performed within a Docker environment, which uses RStudio Server (2023.12.1 Build 402 Ocean storm release). The Docker image can be downloaded from our repository hedgelab/rstudio-hedgelab (rstudio password is rstudio when omitted).
 
-# HiC_data_integration
+### HiC_data_integration
 Follow these steps to pull and run the Docker image for the HiC data analysis from the terminal:
 
     dockered
@@ -84,7 +84,7 @@ For RUES2 HiC data integration unzip the scratch_HiC_RUES2 and add the RUES2_HiC
 
 Refer to our GitHub [Hi-c pipeline](https://github.com/sara-bianchi/HiC_pipeline)
 
-# 4C analysis
+### 4C analysis
 Follow these steps to pull and run the Docker image for the 4C data analysis from the terminal:
 
     dockered
