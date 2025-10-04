@@ -123,8 +123,7 @@ if(indexing == TRUE){
 } else{if(alignment == TRUE){
   if(length(unique(na.omit(settings$genome_dir))) != 1 | dir.exists(settings$genome_dir[1]) == FALSE){
     print("invalid argument for genom_dir"); stop()
-  } else{genome_dir = as.character(settings$genome_dir[1])
-  system2("wget", paste0("LINK --output-file ", genome_dir))}};
+  } else{genome_dir = as.character(settings$genome_dir[1])}};
   if(length(unique(na.omit(settings$gene_length))) != 1 | file.exists(settings$gene_length[1]) == FALSE){
     print("invalid argument for gene_length"); stop()
   } else{gene_length = as.character(settings$gene_length[1])};
