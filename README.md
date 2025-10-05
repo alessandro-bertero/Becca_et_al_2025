@@ -106,14 +106,18 @@ Follow these steps to pull and run the Docker image for the scRNAseq data analys
     dockered
     docker pull hedgelab/cellranger8:latest
     docker pull hedgelab/rstudio-hedgelab:media
-
+    
 For single_cell_data_integration move the single_cell_data_integration scripts in a ./scratch_single_cell folder and run the following commands:
 
     docker run -d -itv ./scratch_single_cell folder:/home/shared_folder --privileged=true --name=NAME_CONTAINER hedgelab/rstudio-hedgelab:media
     docker exec -it NAME_CONTAINER Rscript /home/shared_folder/step1_preprocessing.R
     docker exec -it NAME_CONTAINER Rscript /home/shared_folder/step2_analysis.R
+
+Download the 10X GRCh38 STAR genome (for scRNAseq_1 and scRNAseq_2):
+
+    wget https://cf.10xgenomics.com/supp/cell-exp/refdata-gex-GRCh38-2020-A.tar.gz
     
-For scRNAseq_1 analysis unzip the scratch_scRNAseq_1.zip folder, and download the fastq files from ArrayExpress (ACCESSION NUMBER) in a ./fastq subfolder. Move the scRNAseq_cardiac_organoids scripts into the scratch folder and run the following commands to perform the analysis.
+For scRNAseq_1 analysis unzip the scratch_scRNAseq_1.zip folder, and download the fastq files from ArrayExpress (ACCESSION NUMBER) in a ./fastq subfolder. Move the scRNAseq_cardiac_organoids scripts and the genome index directory into the scratch folder and run the following commands to perform the analysis.
 
     docker run -itv ./scratch_scRNAseq_1:/home/shared_folder hedgelab/cellranger8 /home/shared_folder/multi.sh
     docker run -itv ./scratch_scRNAseq_1:/home/shared_folder hedgelab/cellranger8 /home/shared_folder/aggr.sh
@@ -122,7 +126,7 @@ For scRNAseq_1 analysis unzip the scratch_scRNAseq_1.zip folder, and download th
     docker exec -it NAME_CONTAINER Rscript /home/shared_folder/AB001_step1_Seurat_Filtering.R
     docker exec -it NAME_CONTAINER rstudio-server start
 
-For scRNAseq_2 analysis unzip the scratch_scRNAseq_2.zip folder, and download the fastq files from ArrayExpress (ACCESSION NUMBER) in a ./fastq subfolder. Move the scRNAseq_cardiac_organoids_with_KD scripts into the scratch folder and run the following commands to perform the analysis.
+For scRNAseq_2 analysis unzip the scratch_scRNAseq_2.zip folder, and download the fastq files from ArrayExpress (ACCESSION NUMBER) in a ./fastq subfolder. Move the scRNAseq_cardiac_organoids_with_KD scripts and the genome index directory into the scratch folder and run the following commands to perform the analysis.
 
     docker run -itv ./scratch_scRNAseq_2:/home/shared_folder hedgelab/cellranger8 /cellranger-8.0.1/bin/cellranger multi --id=AB002_multi --output-dir=/home/shared_folder/Results --csv=/home/shared_folder/config_multi.csv
     docker run -itv ./scratch_scRNAseq_2:/home/shared_folder hedgelab/cellranger8 /home/shared_folder/aggr.sh
