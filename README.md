@@ -90,7 +90,7 @@ Follow these steps to pull and run the Docker image for the 4C data analysis fro
     dockered
     docker pull hedgelab/4c:image1
 
-Unzip the scratch_4C.zip folder, and download the fastq files from ENA (ACCESSION NUMBER) in a fastq subfolder. Move the 4C scripts into the scratch folder and run the following commands to perform the analysis.
+Unzip the scratch_4C.zip folder, and download the fastq files from ENA (accession PRJEB97970) in a fastq subfolder. Move the 4C scripts into the scratch folder and run the following commands to perform the analysis.
 
     docker run -d -v ./scratch_4C:/home/shared_folder --privileged=true --name=NAME_CONTAINER hedgelab/4c:image1
     docker exec -it NOME_CONTAINER wget -P /home/shared_folder https://zenodo.org/records/17256128/files/bowtie2_genome.zip?download=1
@@ -99,6 +99,27 @@ Unzip the scratch_4C.zip folder, and download the fastq files from ENA (ACCESSIO
     docker exec -it NAME_CONTAINER Rscript /home/shared_folder/4C_step3_analysis.R
     docker exec -it NAME_CONTAINER pyGenomeTracks --tracks /home/shared_folder/TTN_plot_genomeTracks/TTN_track --region chr2:178500000-178850000 --outFileName /home/shared_folder/TTN_plot_genomeTracks/4C_clones.pdf
 
+### bulkRNAseq analysis
+Follow these steps to pull and run the Docker image for the scRNAseq data analysis from the terminal:
+
+    dockered
+    docker pull hedgelab/bulk_image:image3
+
+For bulkRNAseq_1 analysis unzip the scratch_bulkRNAseq_1.zip folder, and download the fastq files from ArrayExpress (accession E-MTAB-15684) in a ./fastq subfolder. Move the bulkRNAseq_1 scripts into the scratch folder and run the following commands to perform the analysis.
+
+    docker run -d -v /the/folder/you/want/to/share:/home/shared_folder --privileged=true --name=NAME_CONTAINER hedgelab/bulk_image:image3
+    docker exec -it NAME_CONTAINER Rscript /home/shared_folder/H00BS1_step1_preprocessing.R
+    docker exec -it NAME_CONTAINER Rscript /home/shared_folder/H00BS1_step2_DGEanalysis.R
+    docker exec -it NAME_CONTAINER Rscript /home/shared_folder/H00BS1_step3_BtoAgenes.R
+
+For bulkRNAseq_1 analysis unzip the scratch_bulkRNAseq_2.zip folder, and download the fastq files from ArrayExpress (ACCESSION NUMBER) in a ./fastq subfolder. Move the bulkRNAseq_2 scripts into the scratch folder and run the following commands to perform the analysis.
+
+    docker run -d -v /the/folder/you/want/to/share:/home/shared_folder --privileged=true --name=NAME_CONTAINER hedgelab/bulk_image:image3
+    docker exec -it NAME_CONTAINER /home/shared_folder/SBe001AS1_step1_preprocessing.sh
+    docker exec -it NAME_CONTAINER Rscript /home/shared_folder/SBe001AS1_step2_DGEanalysis.R
+    docker exec -it NAME_CONTAINER Rscript /home/shared_folder/SBe001AS1_step3_heatmaps_GSEA_RRHO.R
+
+Refer to our GitHub [bulk RNAseq pipeline](https://github.com/sara-bianchi/Bulk_RNA_seq_pipeline)
 
 ### scRNAseq analysis
 Follow these steps to pull and run the Docker image for the scRNAseq data analysis from the terminal:
@@ -117,7 +138,7 @@ Download the 10X GRCh38 STAR genome (for scRNAseq_1 and scRNAseq_2):
 
     wget https://cf.10xgenomics.com/supp/cell-exp/refdata-gex-GRCh38-2020-A.tar.gz
     
-For scRNAseq_1 analysis unzip the scratch_scRNAseq_1.zip folder, and download the fastq files from ArrayExpress (ACCESSION NUMBER) in a ./fastq subfolder. Move the scRNAseq_cardiac_organoids scripts and the genome index directory into the scratch folder and run the following commands to perform the analysis.
+For scRNAseq_1 analysis unzip the scratch_scRNAseq_1.zip folder, and download the fastq files from ArrayExpress (acceession E-MTAB-15693) in a ./fastq subfolder. Move the scRNAseq_cardiac_organoids scripts and the genome index directory into the scratch folder and run the following commands to perform the analysis.
 
     docker run -itv ./scratch_scRNAseq_1:/home/shared_folder hedgelab/cellranger8 /home/shared_folder/multi.sh
     docker run -itv ./scratch_scRNAseq_1:/home/shared_folder hedgelab/cellranger8 /home/shared_folder/aggr.sh
@@ -137,25 +158,4 @@ For scRNAseq_2 analysis unzip the scratch_scRNAseq_2.zip folder, and download th
 
 Replace <your_password> with your desired password, if it is omitted the password will be "rstudio". This command maps port 8787 on your host machine to port 8787 in the container, allowing you to access RStudio via your browser at http://localhost:8787. The USER=rstudio part ensures you'll log in as the rstudio user, and the PASSWORD variable sets the password you'll use to log in. Then use Rstudio through a browser to execute the AB001_Monocle_SeparateChambersAnalysis.R and AB001_step3_JointChambersAnalysis.R for scRNAseq_1, and AB002_MoncleAnalysisAll and AB002_MonocleAnalysisSeparate.R for scRNAseq_2.
 
-### bulkRNAseq analysis
-Follow these steps to pull and run the Docker image for the scRNAseq data analysis from the terminal:
-
-    dockered
-    docker pull hedgelab/bulk_image:image3
-
-For bulkRNAseq_1 analysis unzip the scratch_bulkRNAseq_1.zip folder, and download the fastq files from ArrayExpress (ACCESSION NUMBER) in a ./fastq subfolder. Move the bulkRNAseq_1 scripts into the scratch folder and run the following commands to perform the analysis.
-
-    docker run -d -v /the/folder/you/want/to/share:/home/shared_folder --privileged=true --name=NAME_CONTAINER hedgelab/bulk_image:image3
-    docker exec -it NAME_CONTAINER Rscript /home/shared_folder/H00BS1_step1_preprocessing.R
-    docker exec -it NAME_CONTAINER Rscript /home/shared_folder/H00BS1_step2_DGEanalysis.R
-    docker exec -it NAME_CONTAINER Rscript /home/shared_folder/H00BS1_step3_BtoAgenes.R
-
-For bulkRNAseq_1 analysis unzip the scratch_bulkRNAseq_2.zip folder, and download the fastq files from ArrayExpress (ACCESSION NUMBER) in a ./fastq subfolder. Move the bulkRNAseq_2 scripts into the scratch folder and run the following commands to perform the analysis.
-
-    docker run -d -v /the/folder/you/want/to/share:/home/shared_folder --privileged=true --name=NAME_CONTAINER hedgelab/bulk_image:image3
-    docker exec -it NAME_CONTAINER /home/shared_folder/SBe001AS1_step1_preprocessing.sh
-    docker exec -it NAME_CONTAINER Rscript /home/shared_folder/SBe001AS1_step2_DGEanalysis.R
-    docker exec -it NAME_CONTAINER Rscript /home/shared_folder/SBe001AS1_step3_heatmaps_GSEA_RRHO.R
-
-Refer to our GitHub [bulk RNAseq pipeline](https://github.com/sara-bianchi/Bulk_RNA_seq_pipeline)
 
